@@ -9,7 +9,7 @@ def create_socket():
         global port
         global s
         host = ''
-        port = 9999
+        port = 9998
         s = socket.socket()
     except socket.error as msg:
         print('Socket creation error: ' + str(msg))
@@ -17,25 +17,25 @@ def create_socket():
 
 # Binding the socket and listening for connections
 def bind_socket():
-    try:
-        global host
-        global port
-        global s
+    global host
+    global port
+    global s
 
-        print('Binding the port: ' + str(port))
+    while True:
+        try:
+            print('Binding the port: ' + str(port))
+            s.bind((host, port))
+            s.listen(5)
+            break
 
-        s.bind((host, port))
-        s.listen(5)
-
-    except socket.error as msg:
-        print('Socket Binding error ' + str(msg) + '\n' + 'Retrying...')
-        bind_socket()
+        except socket.error as msg:
+            print('Socket Binding error ' + str(msg) + '\n' + 'Retrying...')
 
 
 # Establish connection with a client (socket must be listening)
 def socket_accept():
     conn, address = s.accept()
-    print('Connection has been established! |' + ' IP ' + address[0] + ' | Port' + str(address[1]))
+    print('Connection has been established! |' + ' IP: ' + address[0] + ' | Port: ' + str(address[1]))
     send_commands(conn)
     conn.close()
 
